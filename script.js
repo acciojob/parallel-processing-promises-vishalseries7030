@@ -9,13 +9,15 @@ const images = [
   { url: "https://picsum.photos/id/239/200/300" },
 ];
 
-// function to load one image
+// function to create image element
 function downloadImage(url) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.src = url;
 
-    img.onload = () => resolve(img);
+    // resolve immediately after setting src
+    resolve(img);
+
     img.onerror = () => reject(`Failed to load image: ${url}`);
   });
 }
@@ -29,9 +31,7 @@ function downloadImages() {
 
   Promise.all(images.map(imgObj => downloadImage(imgObj.url)))
     .then(imgElements => {
-      // hide spinner
       loading.style.display = "none";
-      // append images
       imgElements.forEach(img => output.appendChild(img));
     })
     .catch(err => {
